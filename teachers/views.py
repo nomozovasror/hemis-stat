@@ -141,6 +141,18 @@ def teacher_add(request, id):
             )
 
             academic_degree_data.academic_degree_data_name.set([teacher])
+        elif request.POST.get('hidden_input') == 'lang':
+            cert_type = request.POST.get('cert_type')
+            cert_score = request.POST.get('cert_score')
+            cert_file = request.FILES.get('file-3[]')
+
+            language_cert = LanguageCert.objects.create(
+                cert_type=cert_type,
+                cert_score=cert_score,
+                cert_file=cert_file,
+            )
+
+            language_cert.language_cert_name.set([teacher])
 
         return redirect('teacher_info', id=id)
     context = {

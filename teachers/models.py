@@ -97,6 +97,9 @@ class Teachers(models.Model):
     academicRank = models.ForeignKey(Ranks, on_delete=models.CASCADE, to_field='code')
     academic_degree_data = models.ForeignKey('AcademicDegreeData', on_delete=models.SET_NULL, related_name='academic_degree_data_name', null=True, blank=True)
     academic_rank_data = models.ForeignKey('AcademicRankData', on_delete=models.SET_NULL, related_name='academic_rank_data_name', null=True, blank=True)
+
+    language_cert = models.ForeignKey('LanguageCert', on_delete=models.SET_NULL, related_name='language_cert_name', null=True, blank=True)
+
     department = models.ForeignKey(Department, on_delete=models.CASCADE, to_field='code')
     employmentForm = models.ForeignKey(EmploymentForm, on_delete=models.CASCADE, to_field='code')
     employmentStaff = models.ForeignKey(EmploymentStaff, on_delete=models.CASCADE, to_field='code')
@@ -147,3 +150,10 @@ class AcademicRankData(models.Model):
         return str(self.place_of_defense_rank)
 
 
+class LanguageCert(models.Model):
+    cert_type = models.CharField(max_length=200, null=True, blank=True)
+    cert_score = models.CharField(max_length=200, null=True, blank=True)
+    cert_file = models.FileField(upload_to='langCert/', null=True, blank=True)
+
+    def __str__(self):
+        return str(self.cert_type)
