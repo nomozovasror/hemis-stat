@@ -1,0 +1,282 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load teachers_extras %}
+{% load widget_tweaks %}
+{% block content %}
+
+<div class="container-fluid px-3">
+                    <div class="row no-gutters">
+                        <div class="col-12">
+                            <form method="get">
+                                <div class="row d-flex justify-content-center m-5">
+                                    <div class="col-10">
+                                        <div id="autocomplete" class="autocomplete">
+                                            {% render_field my_filter.form.teacher_full_name class="autocomplete-input" style="background-color: #fff;" %}
+                                            <ul class="autocomplete-result-list"></ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-2 py-1">
+                                        <button class="btn btn-success py-2" type="submit" style="display: inline-block; height: 100%; width: 100%"><i class="fa-solid fa-magnifying-glass"></i> Qidirish</button>
+                                    </div>
+                                </div>
+                            </form>
+                        <script>
+                            new Autocomplete('#autocomplete', {
+                                search : input =>{
+                                    console.log(input)
+                                    const url =  `/get-teacher/?search=${input}`
+                                    return new Promise(resolve => {
+                                        fetch(url)
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                console.log(data)
+                                                resolve(data.data)
+                                            })
+                                    })
+                                }
+                            })
+                        </script>
+                    <div class="row">
+                            <div class="col-12">
+                                <div class="card card-margin">
+                                    <div class="card-body">
+                                        <div class="row search-body">
+                                            <div class="col-lg-12">
+                                                <div class="search-result">
+                                                    <div class="result-header m-0">
+                                                        <div class="row no-gutters mb-4 mt-2">
+                                                            <div class="col-lg-6 col-sm-12">
+                                                                <div class="records">Natijalar: <b>{{ count }}</b> dan <b>{{ start_index }}-{{ end_index }}</b></div>
+                                                            </div>
+                                                            <div class="col-lg-12 col-sm12 mt-2">
+                                                                <div class="result-actions">
+                                                                    <div class="result-sorting">
+                                                                        <span>Saralash</span>
+                                                                        <form method="get">
+                                                                            <div class="filter-form-all">
+                                                                                {% render_field my_filter.form.department__faculty_id class="filter-form" id="faculty" onchange="displayValue()" %}
+                                                                                {% render_field my_filter.form.department class="hidden-option filter-form" id="department" %}
+                                                                                {% render_field my_filter.form.employmentForm class="filter-form" %}
+                                                                                {% render_field my_filter.form.staffPosition class="filter-form" %}
+                                                                                <button type="submit"><i class="fa-solid fa-filter"></i> Qidirish</button>
+                                                                                <p id="testText"></p>
+                                                                            </div>
+                                                                        </form>
+                                                                        <script>
+
+                                                                                document.addEventListener("DOMContentLoaded", function() {
+                                                                                  const selectElement = document.getElementById("faculty");
+                                                                                  let department = document.getElementById("department");
+                                                                                  let departmentOptions = department.options;
+
+                                                                                  selectElement.addEventListener("change", function() {
+                                                                                    const selectedValue = selectElement.options[selectElement.selectedIndex].value;
+                                                                                    for (let i = 0; i < departmentOptions.length; i++) {
+                                                                                      if (departmentOptions[1].value === selectedValue) {
+                                                                                        departmentOptions[i].hidden = true
+                                                                                        } else if(departmentOptions[2].value === selectedValue){
+                                                                                          departmentOptions[i].hidden = true
+                                                                                          departmentOptions[5].hidden = false
+                                                                                          departmentOptions[6].hidden = false
+                                                                                          departmentOptions[7].hidden = false
+                                                                                          departmentOptions[8].hidden = false
+                                                                                        }else if(departmentOptions[3].value === selectedValue){
+                                                                                          departmentOptions[i].hidden = true
+                                                                                          departmentOptions[9].hidden = false
+                                                                                          departmentOptions[10].hidden = false
+                                                                                          departmentOptions[26].hidden = false
+                                                                                          departmentOptions[27].hidden = false
+                                                                                          departmentOptions[28].hidden = false
+                                                                                        }else if(departmentOptions[4].value === selectedValue){
+                                                                                          departmentOptions[i].hidden = true
+                                                                                          departmentOptions[42].hidden = false
+                                                                                          departmentOptions[41].hidden = false
+                                                                                        }else if(departmentOptions[5].value === selectedValue){
+                                                                                          departmentOptions[i].hidden = true
+                                                                                          departmentOptions[40].hidden = false
+                                                                                          departmentOptions[39].hidden = false
+                                                                                        }else if(departmentOptions[6].value === selectedValue){
+                                                                                          departmentOptions[i].hidden = true
+                                                                                          departmentOptions[3].hidden = false
+                                                                                          departmentOptions[4].hidden = false
+                                                                                          departmentOptions[29].hidden = false
+                                                                                          departmentOptions[30].hidden = false
+                                                                                        }else if(departmentOptions[7].value === selectedValue){
+                                                                                          departmentOptions[i].hidden = true
+                                                                                          departmentOptions[38].hidden = false
+                                                                                          departmentOptions[37].hidden = false
+                                                                                          departmentOptions[36].hidden = false
+                                                                                          departmentOptions[35].hidden = false
+                                                                                        }else if(departmentOptions[8].value === selectedValue){
+                                                                                          departmentOptions[i].hidden = true
+                                                                                          departmentOptions[23].hidden = false
+                                                                                          departmentOptions[24].hidden = false
+                                                                                          departmentOptions[25].hidden = false
+                                                                                        }else if(departmentOptions[9].value === selectedValue){
+                                                                                          departmentOptions[i].hidden = true
+                                                                                          departmentOptions[20].hidden = false
+                                                                                          departmentOptions[21].hidden = false
+                                                                                          departmentOptions[22].hidden = false
+                                                                                        }else if(departmentOptions[10].value === selectedValue){
+                                                                                          departmentOptions[i].hidden = true
+                                                                                          departmentOptions[19].hidden = false
+                                                                                          departmentOptions[18].hidden = false
+                                                                                          departmentOptions[17].hidden = false
+                                                                                          departmentOptions[16].hidden = false
+                                                                                        }else if(departmentOptions[11].value === selectedValue){
+                                                                                          departmentOptions[i].hidden = true
+                                                                                          departmentOptions[31].hidden = false
+                                                                                          departmentOptions[32].hidden = false
+                                                                                        }else if(departmentOptions[12].value === selectedValue){
+                                                                                          departmentOptions[i].hidden = true
+                                                                                          departmentOptions[1].hidden = false
+                                                                                          departmentOptions[2].hidden = false
+                                                                                          departmentOptions[33].hidden = false
+                                                                                          departmentOptions[34].hidden = false
+                                                                                        }else if(departmentOptions[13].value === selectedValue){
+                                                                                          departmentOptions[i].hidden = true
+                                                                                          departmentOptions[11].hidden = false
+                                                                                          departmentOptions[12].hidden = false
+                                                                                        }else if(departmentOptions[14].value === selectedValue){
+                                                                                          departmentOptions[i].hidden = true
+                                                                                          departmentOptions[13].hidden = false
+                                                                                          departmentOptions[14].hidden = false
+                                                                                          departmentOptions[15].hidden = false
+                                                                                        }else if(departmentOptions[15].value === selectedValue){
+                                                                                          departmentOptions[i].hidden = true
+                                                                                          departmentOptions[43].hidden = false
+                                                                                          departmentOptions[44].hidden = false
+                                                                                          departmentOptions[45].hidden = false
+                                                                                        }else {
+                                                                                          departmentOptions[i].hidden = false
+                                                                                        }
+                                                                                      }
+                                                                                  });
+                                                                                });
+
+                                                                        </script>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="result-body">
+                                                        <div class="table-responsive">
+                                                            <table class="table widget-26">
+                                                                <tbody>
+
+                                                                  {% for index, teacher in items_with_index  %}
+                                                                    <tr>
+                                                                        <td class="widget-26-number">
+                                                                            <div class="widget-26-div">
+                                                                                {{ index }}
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div class="widget-26-job-emp-img">
+                                                                                <img src="{% if teacher.image != '' %}
+                                                                                    {{ teacher.image}}
+                                                                                {% else %}
+                                                                                    {% if teacher.gender.code == '11' %}
+                                                                                        {% static 'dist/img/business-man.png' %}
+                                                                                    {% else %}
+                                                                                        {% static 'dist/img/woman.png' %}
+                                                                                    {% endif %}
+                                                                                {% endif %}" alt="{{ teacher.first_name }}" />
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div class="widget-26-job-title">
+                                                                                <a href="{% url 'teacher_info' teacher.id %}">{{ teacher.short_name }}</a>
+                                                                                <p class="m-0"><a href="#" class="employer-name"></a> <span class="text-muted time">{{ teacher.employmentForm }}</span></p>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div class="widget-26-job-title">
+                                                                                <p class="m-0" >{{ teacher.department.faculty_id }}</p>
+                                                                                <p class="m-0"><a href="#" class="employer-name"></a> <span class="text-muted time">{{ teacher.department }}</span></p>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div class="widget-26-job-info">
+                                                                                <p >{{ teacher.employmentForm }}</p>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div class="widget-26-job-salary">{{ teacher.employmentStaff }}</div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div class="widget-26-job-category {% if teacher.staffPosition.code == "12" %}
+                                                                                                                    bg-soft-warning
+                                                                                                                {% elif teacher.staffPosition.code == "16" %}
+                                                                                                                    bg-soft-info
+                                                                                                                {% elif teacher.staffPosition.code == "11" %}
+                                                                                                                    bg-soft-base
+                                                                                                                {% elif teacher.staffPosition.code == "14" %}
+                                                                                                                    bg-soft-base
+                                                                                                                {% elif teacher.staffPosition.code == "15" %}
+                                                                                                                    bg-soft-danger
+                                                                                                                {% elif teacher.staffPosition.code == "13" %}
+                                                                                                                    bg-soft-blue
+                                                                                                                {% endif %}">
+                                                                                <i class="indicator {% if teacher.staffPosition.code == "12" %}
+                                                                                                                    bg-warning
+                                                                                                                {% elif teacher.staffPosition.code == "16" %}
+                                                                                                                    bg-info
+                                                                                                                {% elif teacher.staffPosition.code == "11" %}
+                                                                                                                    bg-success
+                                                                                                                {% elif teacher.staffPosition.code == "14" %}
+                                                                                                                    bg-info
+                                                                                                                {% elif teacher.staffPosition.code == "15" %}
+                                                                                                                    bg-danger
+                                                                                                                {% elif teacher.staffPosition.code == "13" %}
+                                                                                                                    bg-blue-dot
+                                                                                                                {% endif %}"></i>
+                                                                                <span>{{ teacher.staffPosition }}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                  {% endfor %}
+
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <nav class="d-flex justify-content-center">
+                                            <ul class="pagination pagination-base pagination-boxed pagination-square mb-0">
+                                                {% if page_obj.has_previous %}
+                                                <li class="page-item">
+                                                    <a class="page-link no-border" href="{% teachers_url page_obj.previous_page_number 'page' request.GET.urlencode %}">
+                                                        <span aria-hidden="true">«</span>
+                                                        <span class="sr-only">Previous</span>
+                                                    </a>
+                                                </li>
+                                                {% endif %}
+                                            {% for num in page_range %}
+                                                <li class="page-item
+                                                    {% if num == page_obj.number %}
+                                                        active
+                                                    {% endif %}">
+                                                        <a class="page-link no-border" href="{% teachers_url num 'page' request.GET.urlencode %}">{{ num }}</a>
+                                                <li class="page-item">
+                                            {% endfor %}
+                                            {% if page_obj.has_next %}
+                                                    <a class="page-link no-border" href="{% teachers_url page_obj.next_page_number 'page' request.GET.urlencode %}">
+                                                        <span aria-hidden="true">»</span>
+                                                        <span class="sr-only">Next</span>
+                                                    </a>
+                                            {% endif %}
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+{% endblock %}
