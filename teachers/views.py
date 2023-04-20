@@ -90,30 +90,42 @@ def teacher_add(request, id):
 
     if request.method == 'POST':
         if request.POST.get('hidden_input') == 'rank':
-            place_of_defense_rank = request.POST.get('place_of_defense_rank')
-            council_number_rank = request.POST.get('council_number_rank')
-            given_by_whom_rank = request.POST.get('given_by_whom_rank')
-            date_of_defense_rank = request.POST.get('date_of_defense_rank')
-            number_of_degree_rank = request.POST.get('number_of_degree_rank')
-            confirmed_date_rank = request.POST.get('confirmed_date_rank')
-            account_number_rank = request.POST.get('account_number_rank')
-            created_rank = request.POST.get('created_rank')
-            changed_rank = request.POST.get('changed_rank')
-            academic_rank_file_rank = request.FILES.get('file-2[]')
+            # Get the existing academic rank data for the teacher, if it exists
+            academic_rank_data = AcademicRankData.objects.filter(academic_rank_data_name=teacher).first()
 
-            academic_rank_data = AcademicRankData.objects.create(
-                place_of_defense_rank=place_of_defense_rank,
-                council_number_rank=council_number_rank,
-                given_by_whom_rank=given_by_whom_rank,
-                date_of_defense_rank=date_of_defense_rank,
-                number_of_degree_rank=number_of_degree_rank,
-                confirmed_date_rank=confirmed_date_rank,
-                account_number_rank=account_number_rank,
-                created_rank=created_rank,
-                changed_rank=changed_rank,
-                academic_rank_file_rank=academic_rank_file_rank,
-            )
-            academic_rank_data.academic_rank_data_name.set([teacher])
+            # If academic rank data already exists for this teacher, update it. Otherwise, create a new record
+            if academic_rank_data:
+                academic_rank_data.place_of_defense_rank = request.POST.get('place_of_defense_rank')
+                academic_rank_data.council_number_rank = request.POST.get('council_number_rank')
+                academic_rank_data.given_by_whom_rank = request.POST.get('given_by_whom_rank')
+                academic_rank_data.date_of_defense_rank = request.POST.get('date_of_defense_rank')
+                academic_rank_data.number_of_degree_rank = request.POST.get('number_of_degree_rank')
+                academic_rank_data.confirmed_date_rank = request.POST.get('confirmed_date_rank')
+                academic_rank_data.account_number_rank = request.POST.get('account_number_rank')
+                academic_rank_data.created_rank = request.POST.get('created_rank')
+                academic_rank_data.changed_rank = request.POST.get('changed_rank')
+
+                # Check if a new file was uploaded, and update the file field if it was
+                academic_rank_file_rank = request.FILES.get('file-2[]')
+                if academic_rank_file_rank:
+                    academic_rank_data.academic_rank_file_rank = academic_rank_file_rank
+
+                academic_rank_data.save()
+
+            else:
+                academic_rank_data = AcademicRankData.objects.create(
+                    place_of_defense_rank=request.POST.get('place_of_defense_rank'),
+                    council_number_rank=request.POST.get('council_number_rank'),
+                    given_by_whom_rank=request.POST.get('given_by_whom_rank'),
+                    date_of_defense_rank=request.POST.get('date_of_defense_rank'),
+                    number_of_degree_rank=request.POST.get('number_of_degree_rank'),
+                    confirmed_date_rank=request.POST.get('confirmed_date_rank'),
+                    account_number_rank=request.POST.get('account_number_rank'),
+                    created_rank=request.POST.get('created_rank'),
+                    changed_rank=request.POST.get('changed_rank'),
+                    academic_rank_file_rank=request.FILES.get('file-2[]')
+                )
+                academic_rank_data.academic_rank_data_name.set([teacher])
 
         elif request.POST.get('hidden_input') == 'degree':
             place_of_defense_degree = request.POST.get('place_of_defense_degree')

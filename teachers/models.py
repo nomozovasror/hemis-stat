@@ -157,3 +157,12 @@ class LanguageCert(models.Model):
 
     def __str__(self):
         return str(self.cert_type)
+
+
+class Grants(models.Model):
+    grand_1 = models.PositiveIntegerField(default=0)
+    grand_2 = models.PositiveIntegerField(default=0)
+    summa = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return str(self.grand_1)
