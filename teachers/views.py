@@ -90,10 +90,8 @@ def teacher_add(request, id):
 
     if request.method == 'POST':
         if request.POST.get('hidden_input') == 'rank':
-            # Get the existing academic rank data for the teacher, if it exists
             academic_rank_data = AcademicRankData.objects.filter(academic_rank_data_name=teacher).first()
 
-            # If academic rank data already exists for this teacher, update it. Otherwise, create a new record
             if academic_rank_data:
                 academic_rank_data.place_of_defense_rank = request.POST.get('place_of_defense_rank')
                 academic_rank_data.council_number_rank = request.POST.get('council_number_rank')
@@ -105,7 +103,6 @@ def teacher_add(request, id):
                 academic_rank_data.created_rank = request.POST.get('created_rank')
                 academic_rank_data.changed_rank = request.POST.get('changed_rank')
 
-                # Check if a new file was uploaded, and update the file field if it was
                 academic_rank_file_rank = request.FILES.get('file-2[]')
                 if academic_rank_file_rank:
                     academic_rank_data.academic_rank_file_rank = academic_rank_file_rank

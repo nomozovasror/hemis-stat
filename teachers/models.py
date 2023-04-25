@@ -152,7 +152,6 @@ class AcademicRankData(models.Model):
 
 class LanguageCert(models.Model):
     cert_type = models.CharField(max_length=200, null=True, blank=True)
-    cert_score = models.CharField(max_length=200, null=True, blank=True)
     cert_file = models.FileField(upload_to='langCert/', null=True, blank=True)
 
     def __str__(self):
